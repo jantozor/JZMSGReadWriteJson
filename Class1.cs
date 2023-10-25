@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Windows.Forms;
@@ -22,11 +21,9 @@ namespace JZMSGReadWriteJson
             }
             return clase;
         }
-
         public static String WriteJson<T>(T clase, bool NameHandlingAll = false)
         {
             string json = "";
-
             if (NameHandlingAll)
             {
                 Newtonsoft.Json.JsonSerializerSettings settings = new Newtonsoft.Json.JsonSerializerSettings { TypeNameHandling = Newtonsoft.Json.TypeNameHandling.All };
@@ -38,7 +35,6 @@ namespace JZMSGReadWriteJson
             }
             return json;
         }
-
         public static T Read<T>(string dir, bool NameHandlingAll = false)
         {
             return Read<T>(dir, "", "", NameHandlingAll);
@@ -51,7 +47,6 @@ namespace JZMSGReadWriteJson
                 r = new StreamReader(dir);
                 string json = r.ReadToEnd();
                 T clase = ReadJson<T>(json, NameHandlingAll);
-
                 r.Close();
                 if (success != "")
                     Show(success, "Success", Buttons.OK, Icons.Information);
@@ -71,9 +66,7 @@ namespace JZMSGReadWriteJson
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "BIM Exchange|*.BEX|All Files|*.*";
             openFileDialog.ShowDialog();
-
             string dir = openFileDialog.FileName;
-
             if (dir != "")
             {
                 return Read<T>(dir, success, fail, NameHandlingAll);
@@ -83,20 +76,16 @@ namespace JZMSGReadWriteJson
                 Show("File not selected", "Error", Buttons.OK, Icons.Error);
                 return default(T);
             }
-
         }
-
         public static bool Save<T>(string dir, T save, bool NameHandlingAll = false)
         {
             return Save<T>(dir, save, "", "", NameHandlingAll);
         }
-
         public static bool Save<T>(string dir, T save, string success, string fail, bool NameHandlingAll = false)
         {
             try
             {
                 string json = WriteJson(save, NameHandlingAll);
-                               
                 if (dir != "" && json != "")
                 {
                     File.WriteAllText(dir, json);
@@ -122,12 +111,8 @@ namespace JZMSGReadWriteJson
         {
             SaveFileDialog saveFile = new SaveFileDialog();
             saveFile.Filter = "BIM Exchange|*.BEX";
-
             saveFile.ShowDialog();
-
             string dir = saveFile.FileName;
-
-
             if (dir != "")
             {
                 return Save<T>(dir, save, success, fail, NameHandlingAll);
@@ -138,20 +123,19 @@ namespace JZMSGReadWriteJson
                 return false;
             }
         }
-
         public static DialogR Show(string message, string title,
         Buttons buttons, Icons icon)
         {
-            // Create a host form that is a TopMost window which will be the 
+            // Create a host form that is a TopMost window which will be the
             // parent of the MessageBox.
             Form topmostForm = new Form();
-            // We do not want anyone to see this window so position it off the 
+            // We do not want anyone to see this window so position it off the
             // visible screen and make it as small as possible
             topmostForm.Size = new System.Drawing.Size(1, 1);
             topmostForm.StartPosition = FormStartPosition.Manual;
             System.Drawing.Rectangle rect = SystemInformation.VirtualScreen;
             topmostForm.Location = new System.Drawing.Point(rect.Bottom + 10,
-                rect.Right + 10);
+            rect.Right + 10);
             topmostForm.Show();
             // Make this form the active form and make it TopMost
             topmostForm.Focus();
@@ -159,58 +143,45 @@ namespace JZMSGReadWriteJson
             topmostForm.TopMost = true;
             // Finally show the MessageBox with the form just created as its owner
             DialogResult result = MessageBox.Show(topmostForm, message, title,
-                (MessageBoxButtons)buttons, (MessageBoxIcon)icon);
+            (MessageBoxButtons)buttons, (MessageBoxIcon)icon);
             topmostForm.Dispose(); // clean it up all the way
-
             return (DialogR)result;
         }
-
         public static DialogR Show(string message, string title,
         Buttons buttons)
         {
             return Show(message, title, buttons, Icons.None);
         }
-
         public static double RoundDown(double round, double mult)
         {
             if (mult == 0)
                 mult = 0.01;
-
             round = round / mult;
             round = Math.Floor(round);
             round = round * mult;
-
             return round;
         }
-
         public static double RoundUp(double round, double mult)
         {
             if (mult == 0)
                 mult = 0.01;
-
             round = round / mult;
             round = Math.Ceiling(round);
             round = round * mult;
-
             return round;
         }
-
         public static double Round(double round, double mult)
         {
             if (mult == 0)
                 mult = 0.01;
-
             round = round / mult;
             round = Math.Round(round, MidpointRounding.AwayFromZero);
             round = round * mult;
-
             return round;
         }
-
         public static int ParseEndInt(ref string text)
         {
             string stack = "";
-
             for (var i = text.Length - 1; i >= 0; i--)
             {
                 if (!char.IsNumber(text[i]))
@@ -220,13 +191,11 @@ namespace JZMSGReadWriteJson
                 stack = text[i] + stack;
                 text = text.Remove(i);
             }
-
             if (stack.Length == 0)
                 return 0;
             else
                 return int.Parse(stack);
         }
-               
         public enum DialogR : int
         {
             None = DialogResult.None,
@@ -238,7 +207,6 @@ namespace JZMSGReadWriteJson
             Yes = DialogResult.Yes,
             No = DialogResult.No,
         }
-
         public enum Buttons : int
         {
             OK = MessageBoxButtons.OK,
@@ -248,7 +216,6 @@ namespace JZMSGReadWriteJson
             YesNo = MessageBoxButtons.YesNo,
             RetryCancel = MessageBoxButtons.RetryCancel,
         }
-
         public enum Icons : int
         {
             Asterisk = MessageBoxIcon.Asterisk,
@@ -261,24 +228,21 @@ namespace JZMSGReadWriteJson
             Stop = MessageBoxIcon.Stop,
             Warning = MessageBoxIcon.Warning,
         }
-
         public static void CheckNullNames(string name, ValidationResponse added, bool showmsg = true)
         {
             if (name == "" || name == null)
             {
-                added.Information = "The name can not be null.";                
+                added.Information = "The name can not be null.";
             }
             else
             {
                 added.Information = RemoveForbiddenCharacter(name, false);
             }
-
-            if (showmsg && added.Information!= "")
+            if (showmsg && added.Information != "")
             {
                 Show(added.Information, "Warning", Buttons.OK);
             }
         }
-        
         public static string RemoveForbiddenCharacter(string value, bool showmsg = true)
         {
             string result = "";
@@ -300,24 +264,21 @@ namespace JZMSGReadWriteJson
                 }
             }
             string msgwarn = "";
-
             if (warn)
                 msgwarn = "The name can not contain (\"_\", \"\\\").";
 
             if (showmsg)
             {
-                if(msgwarn != "")
+                if (msgwarn != "")
                     Show(msgwarn, "Warning", Buttons.OK);
             }
             else
             {
                 result = msgwarn;
             }
-
             return result;
         }
     }
-
     public static class CheckboxDialog
     {
         public static bool ShowDialog(string text, string caption)
@@ -342,12 +303,10 @@ namespace JZMSGReadWriteJson
             return chk.Checked;
         }
     }
-
     public class ValidationResponse
     {
         public bool Successful { get; set; }
         public string Information { get; set; }
-
         public ValidationResponse() { }
         public ValidationResponse(bool succesful)
         {
@@ -359,11 +318,9 @@ namespace JZMSGReadWriteJson
             Successful = succesful;
             Information = information;
         }
-
         public static implicit operator bool(ValidationResponse validationResponse) { return validationResponse.Successful; }
         public static implicit operator ValidationResponse(bool succesful) { return new ValidationResponse(succesful); }
     }
-    
     public class NameEnumConverter : EnumConverter
     {
         private Type _enumType;
@@ -374,90 +331,50 @@ namespace JZMSGReadWriteJson
         ///to change. All another functions for enums
         ///you can use by Ctrl+C/Ctrl+V
 
-        public NameEnumConverter(Type type)
-
-        : base(type)
-
+        public NameEnumConverter(Type type) : base(type)
         {
-
             _enumType = type;
-
         }
-
         public override bool CanConvertTo(ITypeDescriptorContext context, Type destType)
-
         {
-
             return destType == typeof(string);
-
         }
-
         public override object ConvertTo(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value, Type destType)
-
         {
-
             System.Reflection.FieldInfo fi = _enumType.GetField(Enum.GetName(_enumType, value));
-
             DescriptionAttribute dna = (DescriptionAttribute)Attribute.GetCustomAttribute(fi, typeof(DescriptionAttribute));
-
             if (dna != null)
-
                 return dna.Description;
-
             else
-
                 return value.ToString();
-
         }
-
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type srcType)
-
         {
-
             return srcType == typeof(string);
-
         }
-
         public override object ConvertFrom(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value)
-
         {
-
             foreach (System.Reflection.FieldInfo fi in _enumType.GetFields())
-
             {
-
-                DescriptionAttribute dna =
-
-                (DescriptionAttribute)Attribute.GetCustomAttribute(fi, typeof(DescriptionAttribute));
-
+                DescriptionAttribute dna = (DescriptionAttribute)Attribute.GetCustomAttribute(fi, typeof(DescriptionAttribute));
                 if ((dna != null) && ((string)value == dna.Description))
-
                     return Enum.Parse(_enumType, fi.Name);
-
             }
-
             return Enum.Parse(_enumType, (string)value);
-
         }
-
     }
-
     public class StringValue : System.Attribute
     {
         private readonly string _value;
-
         public StringValue(string value)
         {
             _value = value;
         }
-
         public string Value
         {
             get { return _value; }
         }
-
     }
-
     public static class StringEnum
     {
         public static string GetStringValue(Enum value)
@@ -468,15 +385,13 @@ namespace JZMSGReadWriteJson
                 Type type = value.GetType();
 
                 //Check first in our cached results...
-
-                //Look for our 'StringValueAttribute' 
-
+                //Look for our 'StringValueAttribute'
                 //in the field's custom attributes
 
                 System.Reflection.FieldInfo fi = type.GetField(value.ToString());
                 StringValue[] attrs =
-                   fi.GetCustomAttributes(typeof(StringValue),
-                                           false) as StringValue[];
+                fi.GetCustomAttributes(typeof(StringValue),
+                false) as StringValue[];
                 if (attrs.Length > 0)
                 {
                     output = attrs[0].Value;
@@ -486,19 +401,15 @@ namespace JZMSGReadWriteJson
             {
                 output = "";
             }
-
             return output;
         }
-
         public static string GetDescriptionValue(Enum value)
         {
             string output = null;
             try
             {
                 Type type = value.GetType();
-
                 System.Reflection.FieldInfo fi = type.GetField(value.ToString());
-
                 DescriptionAttribute dna = (DescriptionAttribute)Attribute.GetCustomAttribute(fi, typeof(DescriptionAttribute));
                 output = dna.Description;
             }
@@ -506,9 +417,7 @@ namespace JZMSGReadWriteJson
             {
                 output = "";
             }
-
             return output;
         }
     }
-
 }

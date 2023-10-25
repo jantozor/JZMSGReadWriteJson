@@ -65,7 +65,7 @@ namespace JZMSGReadWriteJson
             CheckBox = checkBox;
         }
 
-        internal MsgBoxExForm(string message, string caption, MsgBoxButtons msgBoxButtons, MsgBoxIcon icon, MsgBoxOrder topmost, 
+        internal MsgBoxExForm(string message, string caption, MsgBoxButtons msgBoxButtons, MsgBoxIcon icon, MsgBoxOrder topmost,
             MsgBoxCheckBox checkBox, MsgBoxDefaultButton defaultButton) : this(message, caption, msgBoxButtons, icon, topmost, checkBox)
         {
             // Set default button
@@ -73,13 +73,13 @@ namespace JZMSGReadWriteJson
         }
 
         internal MsgBoxExForm(string message, string caption, MsgBoxButtons msgBoxButtons, MsgBoxIcon icon, MsgBoxOrder topmost,
-            MsgBoxCheckBox checkBox, MsgBoxDefaultButton defaultButton, string textColor) : 
+            MsgBoxCheckBox checkBox, MsgBoxDefaultButton defaultButton, string textColor) :
             this(message, caption, msgBoxButtons, icon, topmost, checkBox, defaultButton)
         {
             // Set the color of the Message text.
             TextColor = textColor;
         }
-        internal MsgBoxExForm(string message, string caption, MsgBoxButtons msgBoxButtons, MsgBoxIcon icon, MsgBoxOrder topmost, 
+        internal MsgBoxExForm(string message, string caption, MsgBoxButtons msgBoxButtons, MsgBoxIcon icon, MsgBoxOrder topmost,
             MsgBoxCheckBox checkBox, MsgBoxDefaultButton defaultButton, string textColor, string formBackGroundColor) :
             this(message, caption, msgBoxButtons, icon, topmost, checkBox, defaultButton, textColor)
         {
@@ -808,7 +808,7 @@ namespace JZMSGReadWriteJson
         /// One of the MsgBoxResult values.
         /// The state of the Do not show again check box.
         /// </returns>
-        public static MsgBoxResult Show(string message, string caption, MsgBoxButtons msgBoxButtons, MsgBoxIcon icon, MsgBoxOrder topMost, 
+        public static MsgBoxResult Show(string message, string caption, MsgBoxButtons msgBoxButtons, MsgBoxIcon icon, MsgBoxOrder topMost,
             MsgBoxCheckBox doNotShowAgain, out MsgBoxCheckState checkBoxState, MsgBoxDefaultButton defaultButton, string textColor)
         {
             return new MsgBoxExForm(message, caption, msgBoxButtons, icon, topMost, doNotShowAgain, defaultButton, textColor).Show(out checkBoxState);
@@ -856,7 +856,7 @@ namespace JZMSGReadWriteJson
         /// One of the MsgBoxResult values.
         /// The state of the Do not show again check box.
         /// </returns>
-        public static MsgBoxResult Show(string message, string caption, MsgBoxButtons msgBoxButtons, MsgBoxIcon icon, MsgBoxOrder topMost, 
+        public static MsgBoxResult Show(string message, string caption, MsgBoxButtons msgBoxButtons, MsgBoxIcon icon, MsgBoxOrder topMost,
             MsgBoxCheckBox doNotShowAgain, out MsgBoxCheckState checkBoxState, MsgBoxDefaultButton defaultButton, string textColor, string formColor)
         {
             return new MsgBoxExForm(message, caption, msgBoxButtons, icon, topMost, doNotShowAgain, defaultButton, textColor, formColor).Show(out checkBoxState);
